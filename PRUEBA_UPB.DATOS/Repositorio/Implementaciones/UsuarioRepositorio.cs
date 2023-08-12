@@ -10,6 +10,7 @@ using PRUEBA_UPB.DATOS.Repositorio.Interfaces;
 using PRUEBA_UPB.DATOS.Utilitarios;
 using PRUEBA_UPB.DATOS.Constantes;
 using Npgsql;
+using System.Reflection;
 
 namespace PRUEBA_UPB.DATOS.Repositorio.Implementaciones
 {
@@ -34,34 +35,22 @@ namespace PRUEBA_UPB.DATOS.Repositorio.Implementaciones
             await _utilitarioSQLComando.StoredProcNonQueryAsync(Constantes.ProcAlmacenado.spBorrarUsuario, sqlParametros);
         }
 
-        public async Task GuardarUsuario() 
+        public async Task GuardarUsuario(Usuario usuario) 
         {
-           /* var result = new T();
-            var properties = typeof(T).GetProperties();
-           */
-            //var sqlParametros = new NpgsqlParameter[typeof(T).GetProperties().Count()];
-            var sqlParametros = new NpgsqlParameter[1];
+            
+            Type usu = usuario.GetType();
+            PropertyInfo[] Atributos = usu.GetProperties();
+            var sqlParametros = new NpgsqlParameter[Atributos.Length];
             var cont = 0;
-           /*
-            foreach (var property in properties)
+
+            foreach (var item in Atributos)
             {
-                sqlParametros[cont] = new NpgsqlParameter("@p_" + property.Name.ToLower(), property.GetValue(1));
+                sqlParametros[cont] = new NpgsqlParameter("@p_"+item.Name.ToLower(), item.GetValue(usuario));
                 cont++;
-                //property.GetValue.
             }
-           */
+
             await _utilitarioSQLComando.StoredProcNonQueryAsync(Constantes.ProcAlmacenado.spGuardarUsuario, sqlParametros);
-            /*
-            var sqlParametros = new NpgsqlParameter[]
-              {
-                    new NpgsqlParameter("@p_id", id),
-                    new NpgsqlParameter("@p_nombre", id),
-                    new NpgsqlParameter("@p_apellidos", id),
-                    new NpgsqlParameter("@p_email", id),
-                    new NpgsqlParameter("@p_username", id),
-                    new NpgsqlParameter("@p_pdw", id)
-              };
-        */
+
         }
     
 
