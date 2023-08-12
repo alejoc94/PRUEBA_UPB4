@@ -54,29 +54,29 @@ $$ LANGUAGE plpgsql;
 /*SP CREACION*/
 CREATE OR REPLACE FUNCTION sp_crear_actualizar_usuarios(
     IN p_id INTEGER, 
-    IN p_nombre VARCHAR(80), 
+    IN p_nombres VARCHAR(80), 
     IN p_apellidos VARCHAR(80), 
     IN p_email VARCHAR(40), 
     IN p_username VARCHAR(10),
-	IN p_pdw  VARCHAR(10)
+	IN p_pwd  VARCHAR(10)
 )
 RETURNS VOID AS $$
 DECLARE
     v_existe_usu INTEGER;
 BEGIN
     SELECT ID INTO v_existe_usu
-    FROM PRODUCTOS
+    FROM USUARIOS
     WHERE ID = p_id;
 
     IF v_existe_usu < 1 OR v_existe_usu IS NULL THEN
         BEGIN
             INSERT INTO USUARIOS (ID, NOMBRES, APELLIDOS, EMAIL, USERNAME, PWD)
-            VALUES (p_id, p_nombre, p_apellidos, p_email, p_username, p_pwd);
+            VALUES (p_id, p_nombres, p_apellidos, p_email, p_username, p_pwd);
         END;
     ELSE
         BEGIN
             UPDATE USUARIOS
-            SET NOMBRES = p_nombre, 
+            SET NOMBRES = p_nombres, 
 				APELLIDOS = p_apellidos, 
 				EMAIL = p_email, 
 				USERNAME = p_username, 

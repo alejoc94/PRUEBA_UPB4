@@ -9,6 +9,7 @@ namespace PRUEBA_UPB.API.Conf.Extensiones
     {
         internal static IServiceCollection AgregarServicios(this IServiceCollection services)
         {
+            services.AddCors();
             services.AddTransient<IUsuarioServicio, UsuarioServicio>();
             return services;
         }

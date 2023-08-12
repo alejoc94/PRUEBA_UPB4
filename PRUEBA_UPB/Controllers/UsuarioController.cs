@@ -56,9 +56,10 @@ namespace PRUEBA_UPB.API.Controllers
 
         // DELETE api/<UsuarioController>/5
         [HttpDelete("{id}", Name = "BorrarUsuario")]
-        public async void BorrarUsuario(int id)
+        public ActionResult BorrarUsuario(int id)
         {
-            await _usuarioServicio.BorrarUsuario(id);
+            _usuarioServicio.BorrarUsuario(id);
+            return Ok(id);
         }
     }
 }
