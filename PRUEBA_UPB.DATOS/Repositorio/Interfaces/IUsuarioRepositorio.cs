@@ -13,7 +13,7 @@ namespace PRUEBA_UPB.DATOS.Repositorio.Interfaces
 
         public Task<IEnumerable<Usuario>> ObtenerUsuarioPorId(int id);
 
-        public Task GuardarUsuario();
+        public Task GuardarUsuario(Usuario usuario);
 
         public Task BorrarUsuario(int id);
     }

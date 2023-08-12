@@ -9,19 +9,8 @@ namespace PRUEBA_UPB.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class UsuarioDot
+    public class UsuarioDot : Usuario
     {
-        public int Id { get; set; }
-
-        public string Nombres { get; set; } = null!;
-
-        public string Apellidos { get; set; } = null!;
-
-        public string Email { get; set; } = null!;
-
-        public string Username { get; set; } = null!;
-
-        public string Pwd { get; set; } = null!;
     }
 
     public class UsuarioController : Controller
@@ -31,6 +20,7 @@ namespace PRUEBA_UPB.API.Controllers
         public UsuarioController(IUsuarioServicio usuarioServicio)
         {
             _usuarioServicio = usuarioServicio;
+            //UsuarioDot user = new UsuarioDot();
         }
         // GET: api/<UsuarioController>
         [HttpGet]
@@ -40,8 +30,7 @@ namespace PRUEBA_UPB.API.Controllers
             return await _usuarioServicio.ObtenerUsuarios();
         }
 
-        [HttpGet]
-        [Route("ObtenerUsuarioPorId")]
+        [HttpGet("{id}", Name = "ObtenerUsuarioPorId")]
         public async Task<object> ObtenerUsuarioPorId(int id)
         {
             return await _usuarioServicio.ObtenerUsuarioPorId(id);
@@ -50,21 +39,23 @@ namespace PRUEBA_UPB.API.Controllers
         // POST api/<UsuarioController>
         [HttpPost]
         [Route("CrearUsuario")]
-        public ActionResult AgregarUsuario([FromBody] UsuarioDot Usuario)
+        public ActionResult AgregarUsuario([FromBody]UsuarioDot Usuario)
         {
-            //await _usuarioServicio.GuardarUsuario<Usuario>(Usuario);
-            return CreatedAtRoute("DefaultApi", Usuario.Id, Usuario); 
+            _usuarioServicio.GuardarUsuario(Usuario);
+            return CreatedAtRoute("ObtenerUsuarioPorId", new { id = Usuario.Id }, Usuario);
         }
 
         // PUT api/<UsuarioController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [Route("ActualizarUsuario")]
+        public ActionResult ActualizarUsuario([FromBody] UsuarioDot Usuario)
         {
+            _usuarioServicio.GuardarUsuario(Usuario);
+            return Ok(Usuario.Id);
         }
 
         // DELETE api/<UsuarioController>/5
-        [HttpDelete]
-        [Route("BorrarUsuario")]
+        [HttpDelete("{id}", Name = "BorrarUsuario")]
         public async void BorrarUsuario(int id)
         {
             await _usuarioServicio.BorrarUsuario(id);

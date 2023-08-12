@@ -28,9 +28,9 @@ namespace PRUEBA_UPB.SERVICIOS.Implementaciones
             return await _usuarioRepositorio.ObtenerUsuarioPorId(id);
         }
 
-        public async Task GuardarUsuario() 
+        public async Task GuardarUsuario(Usuario usuario)
         {
-            await _usuarioRepositorio.GuardarUsuario();
+            await _usuarioRepositorio.GuardarUsuario(usuario);
         }
 
         public async Task BorrarUsuario(int id)
